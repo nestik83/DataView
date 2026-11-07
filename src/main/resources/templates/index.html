@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="ru" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>DataView</title>
+    <style>
+        :root { font-family: Arial, sans-serif; background: #f4f6f9; color: #202938; }
+        body { margin: 0; }
+        header { padding: 22px 32px; color: white; background: #24364b; }
+        header h1 { margin: 0; font-size: 24px; }
+        main { max-width: 900px; margin: 36px auto; padding: 0 20px; }
+        .card { padding: 24px; margin-bottom: 20px; background: white; border: 1px solid #e1e6ed; border-radius: 10px; }
+        .status { font-weight: 700; }
+        .ok { color: #16834a; }
+        .error { color: #b42318; }
+        dl { display: grid; grid-template-columns: 180px 1fr; gap: 14px; }
+        dt, .muted { color: #667085; }
+        dd { margin: 0; font-family: monospace; overflow-wrap: anywhere; }
+        .muted { line-height: 1.5; }
+        code { background: #f0f2f5; padding: 2px 5px; border-radius: 4px; }
+        @media (max-width: 520px) {
+            header { padding: 18px 20px; }
+            dl { grid-template-columns: 1fr; gap: 6px; }
+            dd { margin-bottom: 10px; }
+        }
+    </style>
+</head>
+<body>
+<header><h1>DataView</h1></header>
+<main>
+    <section class="card">
+        <h2>Подключение к Oracle</h2>
+        <p th:if="${connected}" class="status ok">Подключение работает</p>
+        <p th:unless="${connected}" class="status error">Ошибка запроса</p>
+        <dl th:if="${connected}">
+            <dt>Имя базы данных</dt>
+            <dd th:text="${oracleStatus['DB_NAME']}">ORCL</dd>
+            <dt>Пользователь Oracle</dt>
+            <dd th:text="${oracleStatus['SESSION_USER']}">APP_USER</dd>
+            <dt>Время на сервере БД</dt>
+            <dd th:text="${oracleStatus['DB_TIME']}">2026-01-01 12:00:00</dd>
+        </dl>
+        <p th:unless="${connected}" class="muted" th:text="${errorMessage}">Проверьте параметры подключения к базе данных.</p>
+    </section>
+    <section class="card">
+        <h2>О проекте</h2>
+        <p class="muted">Это начальная версия DataView. Данные на этой странице получаются непосредственно из Oracle через Spring JDBC. Следующий шаг разработки — добавить предметные запросы и таблицы для отображения результатов.</p>
+        <p class="muted">Проверка API: <code>GET /api/oracle/status</code></p>
+    </section>
+</main>
+</body>
+</html>
